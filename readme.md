@@ -3,7 +3,7 @@ Armpa: Robotic arm 4DOF with ROS Noetic
 
 This repository hosts the source code for the ROS < ARMPApP > package.
 
- ![image info]()
+ ![image info](./pictures/armp00.jpg)
 
 This is part of the practices that I am doing in the course Mastering Robot orerating System ROS in the ROBOCADEMY
 
@@ -21,7 +21,7 @@ The robot type is a open-hardware Arm with 4 degrees of freedom
 - RGB Smart NeoPixel x 3.
 
 
-![image info](./pictures/roseco2.jpg)
+![image info](./pictures/armpap01.jpg)
 
 
 ### Contents ###
@@ -137,6 +137,9 @@ The idea was to continue using teensy 4.0 like the rest of the robots. So I desi
  ![image_info](./pictures/armpapBoard.jpg)
 
  **DRV8825 is like A4988 but you can set it to 1:32 pulses versus 1:16 per step.** 
+ 
+ 
+ 
 
 
 
