@@ -102,6 +102,8 @@ Note: In my case the plugins is only compiled and appears when it is in the catk
 
    roslaunch armpap_control armpap_control.launch 
    
+   
+   
 Executing rqt should appear the plugin, armpap_rpt, the sliders controls the movements of the robot and the buttons the gripper. If the checkbox is marked, it will also send the instructions to the real robot.
 
 
@@ -109,7 +111,7 @@ Executing rqt should appear the plugin, armpap_rpt, the sliders controls the mov
 ## Electronics ##
 ### Servo motor with I2C ### 
 
- ![](./roseco/Electronics/pictures/detail_servo_00.png)
+ ![image_info](./pictures/detail_servo_00.png)
  
  **ServoMotor model for Ecology20 and detail of the interior circuit** 
  
@@ -132,26 +134,9 @@ The idea was to continue using teensy 4.0 like the rest of the robots. So I desi
 
 
 
- ![Board](./pictures/armpapBoard.jpg)
+ ![image_info](./pictures/armpapBoard.jpg)
 
  **DRV8825 is like A4988 but you can set it to 1:32 pulses versus 1:16 per step.** 
 
 
 
-### Software
-
- ![](./Electronics/pictures/detail_servo_01.png)
- 
- **Detail of the motor control board** 
-
-The same board can serve different purposes, for example, in the robotic arm we need positioning and hold, while the Eco\_robot we are interested in speed. For this reason and everything that the program is going to be very similar we will have to make different versions. Or group them all in one, although I am afraid that the memory of the PI16f1503 (2Kwords) is not going to give that much.
-
-The encoder gives 12 points per turn, which must be multiplied by the reduction to know how many pulses per turn they give.
-
-![](./Electronics/pictures/boards.jpg)
-
-If you need more powerful motors or those that require a greater workload, there is a version of these servos with an independent power supply from the motors.
-
-## Arduino library ##
-
-In the Electronics folder is the MotorA library for arduino/teensy
