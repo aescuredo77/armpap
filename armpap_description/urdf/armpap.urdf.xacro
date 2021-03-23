@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="armpap">
+
+    <xacro:include filename="$(find armpap_description)/urdf/common.urdf.xacro" />
+
+    <!--
+            <xacro:macro name="base" params="origin_xyz origin_rpy joint_xyz m x y z mesh dir material">
+            <xacro:macro name="fixed" params="prefix parent origin_xyz origin_rpy joint_xyz m x y z mesh dir material ">
+            <xacro:macro name="link" params="prefix parent origin_xyz origin_rpy joint_xyz m x y z mesh dir material ">
+            <xacro:macro name="prismatic" params="prefix parent origin_xyz origin_rpy joint_xyz m x y z mesh dir material ">
+    -->
+
+    <xacro:base 
+    origin_xyz= "${armpap_props['base_link']['x_offset']} ${armpap_props['base_link']['y_offset']} ${armpap_props['base_link']['z_offset']}"
+    origin_rpy="0.0 0.0 0.0"
+    joint_xyz="${armpap_props['base_link']['x_joint']} ${armpap_props['base_link']['y_joint']} ${armpap_props['base_link']['z_joint']}"
+    m="${armpap_props['base_link']['mass']}" 
+    x="${armpap_props['base_link']['x_size']}" 
+    y="${armpap_props['base_link']['y_size']}" 
+    z="${armpap_props['base_link']['z_size']}" 
+    mesh="${armpap_props['base_link']['mesh']}" 
+    dir="${armpap_props['common']['mesh_dir']}" 
+    material="White"
+    aux="0"/>
+
+    <xacro:link prefix="motor_base"
+    parent="base_link"
+    origin_xyz= "${armpap_props['motor_base_comp']['x_offset']} ${armpap_props['motor_base_comp']['y_offset']} ${armpap_props['motor_base_comp']['z_offset']}"
+    origin_rpy="0.0 0.0 0.0"
+    joint_xyz="${armpap_props['motor_base_comp']['x_joint']} ${armpap_props['motor_base_comp']['y_joint']} ${armpap_props['motor_base_comp']['z_joint']}"
+    m="${armpap_props['motor_base_comp']['mass']}" 
+    x="${armpap_props['motor_base_comp']['x_size']}" 
+    y="${armpap_props['motor_base_comp']['y_size']}" 
+    z="${armpap_props['motor_base_comp']['z_size']}"
+    mesh="${armpap_props['motor_base_comp']['mesh']}" 
+    dir="${armpap_props['common']['mesh_dir']}" 
+    material="DarkGrey" 
+    aux="0"
+    axxis="3"/>
+
+    <xacro:link prefix="link_right01"
+    parent="motor_base_link"
+    origin_xyz= "${armpap_props['link_right01']['x_offset']} ${armpap_props['link_right01']['y_offset']} ${armpap_props['link_right01']['z_offset']}"
+    origin_rpy="0.0 0.0 0.0"
+    joint_xyz="${armpap_props['link_right01']['x_joint']} ${armpap_props['link_right01']['y_joint']} ${armpap_props['link_right01']['z_joint']}"
+    m="${armpap_props['link_right01']['mass']}" 
+    x="${armpap_props['link_right01']['x_size']}" 
+    y="${armpap_props['link_right01']['y_size']}" 
+    z="${armpap_props['link_right01']['z_size']}"
+    mesh="${armpap_props['link_right01']['mesh']}" 
+    dir="${armpap_props['common']['mesh_dir']}" 
+    material="Blue" 
+    aux="0"
+    axxis="1"/>
+
+    <xacro:link prefix="link_left01"
+    parent="motor_base_link"
+    origin_xyz= "${armpap_props['link_left01']['x_offset']} ${armpap_props['link_left01']['y_offset']} ${armpap_props['link_left01']['z_offset']}"
+    origin_rpy="0.0 0.0 0.0"
+    joint_xyz="${armpap_props['link_left01']['x_joint']} ${armpap_props['link_left01']['y_joint']} ${armpap_props['link_left01']['z_joint']}"
+    m="${armpap_props['link_left01']['mass']}" 
+    x="${armpap_props['link_left01']['x_size']}" 
+    y="${armpap_props['link_left01']['y_size']}" 
+    z="${armpap_props['link_left01']['z_size']}"
+    mesh="${armpap_props['link_left01']['mesh']}" 
+    dir="${armpap_props['common']['mesh_dir']}" 
+    material="Grey" 
+    aux="0"
+    axxis="1"/>
+
+    <xacro:link prefix="link_left02"
+    parent="link_left01_link"
+    origin_xyz= "${armpap_props['link_left02']['x_offset']} ${armpap_props['link_left02']['y_offset']} ${armpap_props['link_left02']['z_offset']}"
+    origin_rpy="0.0 0.0 0.0"
+    joint_xyz="${armpap_props['link_left02']['x_joint']} ${armpap_props['link_left02']['y_joint']} ${armpap_props['link_left02']['z_joint']}"
+    m="${armpap_props['link_left02']['mass']}" 
+    x="${armpap_props['link_left02']['x_size']}" 
+    y="${armpap_props['link_left02']['y_size']}" 
+    z="${armpap_props['link_left02']['z_size']}" 
+    mesh="${armpap_props['link_left02']['mesh']}" 
+    dir="${armpap_props['common']['mesh_dir']}" 
+    material="White" 
+    aux="0"
+    axxis="1"/>
+
+    <xacro:link prefix="gripper_base"
+    parent="link_left02_link"
+    origin_xyz= "${gripper_props['gripper_base']['x_offset']} ${gripper_props['gripper_base']['y_offset']} ${gripper_props['gripper_base']['z_offset']}"
+    origin_rpy="0.0 0.0 0.0"
+    joint_xyz="${gripper_props['gripper_base']['x_joint']} ${gripper_props['gripper_base']['y_joint']} ${gripper_props['gripper_base']['z_joint']}"
+    m="${gripper_props['gripper_base']['mass']}" 
+    x="${gripper_props['gripper_base']['x_size']}" 
+    y="${gripper_props['gripper_base']['y_size']}" 
+    z="${gripper_props['gripper_base']['z_size']}"  
+    mesh="${gripper_props['gripper_base']['mesh']}" 
+    dir="${gripper_props['common']['mesh_dir']}" 
+    material="Red" 
+    aux="0"
+    axxis="1"/>
+
+    <xacro:prismatic prefix="gripper_left"
+    parent="gripper_base_link"
+    origin_xyz= "${gripper_props['gripper_left']['x_offset']} ${gripper_props['gripper_left']['y_offset']} ${gripper_props['gripper_left']['z_offset']}"
+    origin_rpy="0.0 0.0 0.0"
+    joint_xyz="${gripper_props['gripper_left']['x_joint']} ${gripper_props['gripper_left']['y_joint']} ${gripper_props['gripper_left']['z_joint']}"
+    m="${gripper_props['gripper_left']['mass']}" 
+    x="${gripper_props['gripper_left']['x_size']}" 
+    y="${gripper_props['gripper_left']['y_size']}" 
+    z="${gripper_props['gripper_left']['z_size']}" 
+    mesh="${gripper_props['gripper_left']['mesh']}" 
+    dir="${gripper_props['common']['mesh_dir']}" 
+    material="Grey" 
+    aux="0"
+    limit="0"/>
+
+    <xacro:prismatic prefix="gripper_right"
+    parent="gripper_base_link"
+    origin_xyz= "${gripper_props['gripper_right']['x_offset']} ${gripper_props['gripper_right']['y_offset']} ${gripper_props['gripper_right']['z_offset']}"
+    origin_rpy="0.0 0.0 0.0"
+    joint_xyz="${gripper_props['gripper_right']['x_joint']} ${gripper_props['gripper_right']['y_joint']} ${gripper_props['gripper_right']['z_joint']}"
+    m="${gripper_props['gripper_right']['mass']}" 
+    x="${gripper_props['gripper_right']['x_size']}" 
+    y="${gripper_props['gripper_right']['y_size']}" 
+    z="${gripper_props['gripper_right']['z_size']}" 
+    mesh="${gripper_props['gripper_right']['mesh']}" 
+    dir="${gripper_props['common']['mesh_dir']}" 
+    material="Grey" 
+    aux="0"
+    limit="1"/>
+
+
+
+
+
+    
+</robot>

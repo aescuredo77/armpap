@@ -1,0 +1,76 @@
+common:
+  low_limit: -1.57
+  up_limit: 1.57
+  effort_value: 3
+  speed_value: 0.6
+  mesh_dir: "package://armpap_description/meshes/armpap/"
+
+base_link:
+  mass: 5.0
+  x_size: 0.10160
+  y_size: 0.10160
+  z_size: 0.03836
+  mesh: 'base_link.stl'
+  x_offset: -0.3182
+  y_offset: -0.006
+  z_offset: -0.05720 
+  x_joint: 0.0
+  y_joint: 0.0
+  z_joint: 0.0
+
+
+motor_base_comp:
+  mass: 1.5
+  x_size: 0.18340
+  y_size: 0.11201
+  z_size: 0.12666
+  mesh: 'motor_base_comp.stl'
+  x_offset: -0.3182
+  y_offset: -0.006
+  z_offset: -0.0956 
+  x_joint: 0.0
+  y_joint: 0.0
+  z_joint: 0.03836
+
+
+link_left01:
+  mass: 0.4
+  x_size: 0.04426
+  y_size: 0.12830
+  z_size: 0.15957
+  mesh: 'link_left01.stl'
+  x_offset: -0.30143 #-0.3182
+  y_offset: -0.02576
+  z_offset: -0.16059 #-0.17536
+  x_joint: -0.01677
+  y_joint: 0.01976
+  z_joint: 0.065 #0.07977
+
+link_left02:
+  mass: 0.5
+  x_size: 0.01635
+  y_size: 0.19619
+  z_size: 0.13169
+  mesh: 'link_left02.stl'
+  x_offset: -0.30143
+  y_offset: -0.111
+  z_offset: -0.2825 #-0.2171
+  x_joint: 0.0
+  y_joint: 0.085
+  z_joint: 0.12149
+
+link_right01:
+  mass: 1.5
+  x_size: 0.04717
+  y_size: 0.08912
+  z_size: 0.05585
+  mesh: 'link_right01.stl'
+  x_offset: -0.33381
+  y_offset: -0.02576
+  z_offset: -0.16059 #-0.17536
+  x_joint: 0.01561
+  y_joint: 0.01976
+  z_joint: 0.065 #0.07977
+
+
+

@@ -1,0 +1,300 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+   
+    <xacro:include filename="$(find armpap_description)/urdf/materials.xacro" />
+    <xacro:include filename="$(find armpap_description)/urdf/gazebo.xacro" />
+        
+    <xacro:property name="PI" value="3.1415926535897931"/>
+
+    <!--  wheels configuration-->
+    <xacro:property name="armpap_yaml" value="$(find armpap_description)/config/armpap.yaml"/>
+    <xacro:property name="armpap_props" value="${load_yaml(armpap_yaml)}"/> 
+    <xacro:property name="gripper_yaml" value="$(find armpap_description)/config/gripper.yaml"/>
+    <xacro:property name="gripper_props" value="${load_yaml(gripper_yaml)}"/> 
+
+
+    <xacro:macro name="inertia_box" params="m x y z">
+        <inertial>
+            <mass value="${m}"/>
+            <inertia ixx="${m / 12.0 * (y*y + z*z)}" ixy="0.0" ixz="0.0"
+               iyy="${m / 12.0 * (x*x + z*z)}" iyz="0.0" 
+               izz="${m / 12.0 * (x*x + y*y)}"/>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </inertial>
+   </xacro:macro>
+
+
+    
+    <!--         ##############      macro base robot footpring     ############           -->
+
+
+    <xacro:macro name="base" params="origin_xyz origin_rpy joint_xyz m x y z mesh dir material aux">
+        
+        <xacro:if value="${aux == 1}">
+            <link name="base_aux_link1">
+                <visual>
+                    <geometry>
+                        <cylinder radius="0.015" length="0.001"/>
+                    </geometry>
+                    <material name="${material}"/>
+                    <origin xyz="${joint_xyz}" rpy="0.0 0.0 0.0"/>
+                </visual>
+            </link>
+            <link name="base_aux_link2">
+                <visual>
+                    <geometry>
+                        <cylinder radius="0.001" length="0.6"/>
+                    </geometry>
+                    <material name="${material}"/>
+                    <origin xyz="${joint_xyz}" rpy="0.0 0.0 0.0"/>
+                </visual>
+            </link>
+        </xacro:if>
+        
+        <link name="base_footprint">
+            <visual>
+                <geometry>
+                    <cylinder radius="0.0005" length="0.006"/>
+                </geometry>
+                <material name="${material}"/>
+                <origin xyz="${joint_xyz}" rpy="0.0 0.0 0.0"/>
+            </visual>
+        </link>
+        <joint name="base_footprint_joint" type="fixed">
+            <parent link="base_footprint"/>
+            <child link="base_link" />
+            <origin xyz="${joint_xyz}" rpy="0.0 0.0 0.0" />
+        </joint>
+        <link name="base_link">
+
+            <xacro:inertia_box m="${m}" x="${x}" y="${y}" z="${z}" />
+            <visual>
+                <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
+                <geometry>
+                    <mesh filename="${dir}${mesh}" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="${material}"/>
+            </visual>
+            <collision>
+                <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
+                <geometry>
+                    <mesh filename="${dir}${mesh}" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+        <gazebo reference="base_link">
+            <material>Gazebo/${material}</material>
+        </gazebo>
+    </xacro:macro>
+<!--
+
+###################################################################################################################
+
+-->
+    <xacro:macro name="fixed" params="prefix parent origin_xyz origin_rpy joint_xyz m x y z mesh dir material aux">
+                
+        <xacro:if value="${aux == 1}">
+            <link name="aux_link${prefix}">
+                <visual>
+                    <geometry>
+                        <cylinder radius="0.015" length="0.001"/>
+                    </geometry>
+                    <material name="${material}"/>
+                    <origin xyz="${joint_xyz}" rpy="0.0 ${PI/2} 0.0"/>
+                </visual>
+            </link>
+            <link name="aux_link2${prefix}">
+                <visual>
+                    <geometry>
+                        <cylinder radius="0.001" length="0.6"/>
+                    </geometry>
+                    <material name="${material}"/>
+                    <origin xyz="${joint_xyz}" rpy="0.0 ${PI/2} 0.0"/>
+                </visual>
+            </link>
+        </xacro:if>
+        
+        <link name="${prefix}_link">
+            <xacro:inertia_box m="${m}" x="${x}" y="${y}" z="${z}" />
+            <visual>
+                <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+                <geometry>
+                    <mesh filename="${dir}${mesh}" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="${material}"/>
+            </visual>
+            <collision>
+                <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
+                <geometry>
+                    <mesh filename="${dir}${mesh}" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+        <joint name="${prefix}_joint" type="fixed">
+            <parent link="${parent}"/>
+            <child link="${prefix}_link"/>
+            <origin xyz="${joint_xyz}" rpy="${origin_rpy}" />
+            <axis xyz="1 0 0" rpy="0 0 0" />
+        </joint>
+        <gazebo reference="${prefix}_link">
+            <material>Gazebo/${material}</material>
+            
+        </gazebo>
+    </xacro:macro>
+<!--
+
+##################################################################################################################
+
+-->
+    <xacro:macro name="link" params="prefix parent origin_xyz origin_rpy joint_xyz m x y z mesh dir material aux axxis">
+                
+        <xacro:if value="${aux == 1}">
+            <link name="aux_link${prefix}">
+                <visual>
+                    <geometry>
+                        <cylinder radius="0.015" length="0.001"/>
+                    </geometry>
+                    <material name="${material}"/>
+                    <origin xyz="${joint_xyz}" rpy="0.0 ${PI/2} 0.0"/>
+                </visual>
+            </link>
+            <link name="aux_link2${prefix}">
+                <visual>
+                    <geometry>
+                        <cylinder radius="0.001" length="0.6"/>
+                    </geometry>
+                    <material name="${material}"/>
+                    <origin xyz="${joint_xyz}" rpy="0.0 ${PI/2} 0.0"/>
+                </visual>
+            </link>
+        </xacro:if>
+        
+        <link name="${prefix}_link">
+            <xacro:inertia_box m="${m}" x="${x}" y="${y}" z="${z}" />
+            <visual>
+                <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+                <geometry>
+                    <mesh filename="${dir}${mesh}" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="${material}"/>
+            </visual>
+            <collision>
+                <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
+                <geometry>
+                    <mesh filename="${dir}${mesh}" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+        <joint name="${prefix}_joint" type="continuous">
+            <parent link="${parent}"/>
+            <child link="${prefix}_link"/>
+            <origin xyz="${joint_xyz}" rpy="${origin_rpy}" />
+            <xacro:if value="${axxis == 1}">
+                <axis xyz="1 0 0" rpy="0 0 0" />
+            </xacro:if>
+            <xacro:if value="${axxis == 3}">
+                <axis xyz="0 0 1" rpy="0 0 0" />
+            </xacro:if>
+            <limit lower="-1.57" upper="1.57" effort="3.0" velocity="0.6"/>
+        </joint>
+
+        <transmission name="${prefix}_transmission">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${prefix}_joint">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${prefix}_link">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+        <gazebo reference="${prefix}_link">
+            <material>Gazebo/${material}</material>
+            <mu1>200.0</mu1>
+            <mu2>100.0</mu2>
+            
+        </gazebo>
+    </xacro:macro>
+<!--
+
+############################################################################################################################
+
+-->
+    <xacro:macro name="prismatic" params="prefix parent origin_xyz origin_rpy joint_xyz m x y z mesh dir material aux limit">
+                
+        <xacro:if value="${aux == 1}">
+            <link name="aux_link${prefix}">
+                <visual>
+                    <geometry>
+                        <cylinder radius="0.015" length="0.001"/>
+                    </geometry>
+                    <material name="${material}"/>
+                    <origin xyz="${joint_xyz}" rpy="0.0 ${PI/2} 0.0"/>
+                </visual>
+            </link>
+            <link name="aux_link2${prefix}">
+                <visual>
+                    <geometry>
+                        <cylinder radius="0.001" length="0.6"/>
+                    </geometry>
+                    <material name="${material}"/>
+                    <origin xyz="${joint_xyz}" rpy="0.0 ${PI/2} 0.0"/>
+                </visual>
+            </link>
+        </xacro:if>
+        
+        <link name="${prefix}_link">
+            <xacro:inertia_box m="${m}" x="${x}" y="${y}" z="${z}" />
+            <visual>
+                <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+                <geometry>
+                    <mesh filename="${dir}${mesh}" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="${material}"/>
+            </visual>
+            <collision>
+                <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
+                <geometry>
+                    <mesh filename="${dir}${mesh}" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+        <joint name="${prefix}_joint" type="prismatic">
+            <parent link="${parent}"/>
+            <child link="${prefix}_link"/>
+            <origin xyz="${joint_xyz}" rpy="${origin_rpy}" />
+            <axis xyz="1 0 0" rpy="0 0 0" />
+            <xacro:if value="${limit == 0}">
+                <limit lower="-0.02" upper="0.0" effort="3.0" velocity="0.06"/>
+            </xacro:if>
+            <xacro:if value="${limit == 1}">
+                <limit lower="0.0" upper="0.02" effort="1.5" velocity="0.06"/>
+            </xacro:if>
+        </joint>
+
+        <transmission name="${prefix}_transmission">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${prefix}_joint">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${prefix}_link">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+        <gazebo reference="${prefix}_link">
+            <material>Gazebo/${material}</material>
+            <mu1>100.2</mu1>
+            <mu2>100.2</mu2>
+            
+        </gazebo>
+    </xacro:macro>
+
+    
+
+
+
+</robot>

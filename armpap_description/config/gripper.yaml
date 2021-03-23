@@ -1,0 +1,48 @@
+common:
+  low_limit: -1.57
+  up_limit: 1.57
+  effort_value: 300
+  speed_value: 1.0
+  mesh_dir: "package://armpap_description/meshes/gripper/"
+
+gripper_base:
+  mass: 0.2
+  x_size: 0.8832
+  y_size: 0.08607
+  z_size: 0.05394
+  mesh: 'gripper_base.stl'
+  x_offset: -0.302
+  y_offset: -0.2453
+  z_offset: -0.196  #-0.215
+  x_joint: 0.0
+  y_joint: 0.13465
+  z_joint: -0.08652
+
+
+gripper_left:
+  mass: 0.2
+  x_size: 0.04624
+  y_size: 0.03302
+  z_size: 0.04882
+  mesh: 'gripper_left.stl'
+  x_offset: -0.34319
+  y_offset: -0.295
+  z_offset: -0.1735
+  x_joint: 0.04176
+  y_joint: 0.05
+  z_joint: -0.0225
+
+
+gripper_right:
+  mass: 0.2
+  x_size: 0.04622
+  y_size: 0.03302
+  z_size: 0.04885
+  mesh: 'gripper_right.stl'
+  x_offset: -0.25974
+  y_offset: -0.295
+  z_offset: -0.1735
+  x_joint: -0.04169
+  y_joint: 0.05
+  z_joint: -0.0225
+

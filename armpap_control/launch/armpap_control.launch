@@ -1,0 +1,22 @@
+<launch>
+    <!--Load joint controller configrations from YAML file to parametrer server -->
+    <rosparam file="$(find armpap_control)/config/armpap_control.yaml" command="load" />
+    
+    <!-- load the controllers -->
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn= "false" output="screen"
+            ns="/armpap" args=" joint1_state_controller
+                                motor_base_joint_controller
+                                link_right01_joint_controller
+                                link_left01_joint_controller
+                                link_left02_joint_controller
+                                gripper_base_joint_controller
+                                gripper_left_joint_controller
+                                gripper_right_joint_controller"/> 
+
+    <node name="armpap_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"  output="screen" respawn="false" >
+        <remap from="/joint_states" to="/armpap/joint_states"/>
+        
+        
+    </node>
+    
+</launch>
