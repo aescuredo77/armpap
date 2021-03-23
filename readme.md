@@ -12,7 +12,7 @@ This is part of the practices that I am doing in the course Mastering Robot orer
 The robot type is a open-hardware Arm with 4 degrees of freedom
 
 - Arduino mega 2560.
-- Ramps 1.4 de reprap.
+- Ramps 1.4 by reprap.
 - Driver A4988
 - wifi with ESP8266.
 - Motor Nema 17 24mm x 3.
@@ -47,21 +47,22 @@ The robot type is a open-hardware Arm with 4 degrees of freedom
 
   - [Reduction Source](https://www.thingiverse.com/thing:2071318)
   - [Arm Source](https://www.thingiverse.com/thing:480446)
+  - [Gripper source](https://www.thingiverse.com/thing:920639)
     
-  - Design a gripper
+  - Tools used, Sketchup, blender, netfabb, mesmixer
   
   ![image info](./pictures/armpap.png)
 
 
 - Adapt the 3d model to simulate it. The real robot only has 4 motors, the base, right link, left link and the gripper. When creating the xacro we obtain 7 joints.
   
-  - motor_base_joint (real motor nema 17)
-  - link_right01_joint (real motor nema 17)
-  - link_left01_joint (real motor nema 17)
-  - link_left02_joint --> link_right01_joint - link_left01_joint
-  - gripper_base_joint --> -link_right01_joint + 0.1
-  - gripper_left_joint
-  - gripper_right_joint --> Both gripper motor i2c
+  - motor_base_joint    `real motor nema 17`
+  - link_right01_joint  `real motor nema 17`
+  - link_left01_joint   `real motor nema 17`
+  - link_left02_joint   `passive joint related with link_right01_joint and link_left01_joint` 
+  - gripper_base_joint  `passive joint related with link_right01_joint and link_left01_joint`
+  - gripper_left_joint  `gripper motor i2c`
+  - gripper_right_joint `gripper motor i2c`
   
   
   ![image info](./pictures/armpapvsxacro.png)
@@ -100,38 +101,42 @@ Note: In my case the plugins is only compiled and appears when it is in the catk
    roslaunch armpap_gazebo armpap_gazebo.launch   
 
    roslaunch armpap_control armpap_control.launch 
+   
+Executing rqt should appear the plugin, armpap_rpt, the sliders controls the movements of the robot and the buttons the gripper. If the checkbox is marked, it will also send the instructions to the real robot.
 
 
  
-## Electronics : Servo motor with I2C## 
+## Electronics ##
+### Servo motor with I2C ### 
 
- ![](./Electronics/pictures/detail_servo_00.png)
+ ![](./roseco/Electronics/pictures/detail_servo_00.png)
  
  **ServoMotor model for Ecology20 and detail of the interior circuit** 
  
-The servomotor consists of a controller board with a PIC16f1503 and a LB1938FA driver, which drive a Pololu &quot;Micro-metal-gearmotors&quot; type reduction motor. The reduction of the motors is based on the need for example:
+The servomotor consists of a controller board with a PIC16f1503 and a LB1938FA driver, which drive a Pololu &quot;Micro-metal-gearmotors&quot; type reduction motor.
 
-- 100: 1, 130 rpm
-- 298:1, 45 rpm
+    - 100: 1, 130 rpm
 
-The microcontroller communicates through I2C, which allows us to connect 127 nodes in series. There will not be so many in our applications, we have asked for LP motors, Low power because they have a low consumption that allows us to connect them in series.
 
-The I2c address will depend on the application that we are going to make, it should not be a problem to change it depending on the needs, but we are going to give a few premises. The I2C addresses are defined by 7 bits, the least significant bit tells us if it is writing or reading, so we will give a couple of addresses, the first is the one recorded in the pic, and the other is the one we will use in the Arduino / teensy to communicate. Always in Hexadecinal.
 
-- Servomotor right 0x20 --> 0x10
-- Servomotor left 0x22 --> 0x11
+### Driver ###
 
-### Driver
+To control the stepper motors we use the A4988 driver or its equivalent DRV8825 both of pololu or similar
 
-El driver el chip [LB1938FA](https://www.dropbox.com/s/l5har1ai8nknbxs/LB1938FA.pdf?dl=0), es un driver configurado en puente-H que nos permite controlar el motor en velocidad y dirección con solo dos inputs. Analizando el driver que llevan los servomotores de DFRobot, el L9110S busque alternativas pues el susodicho driver esta un poco descatalogado o solo se vende en páginas de dudosa fiabilidad.
+ [A4988](https://www.pololu.com/product/1182)
+ 
+The idea was to continue using teensy 4.0 like the rest of the robots. So I designed a board to this purpose. But is time of Chinese New Year and that was going to bring a delay. So recycle lab stuff and use an arduino Mega 2560 and a Ramps 1.4 by reprap.
 
- ![](./Electronics/pictures/detail_driver_00.png)
+[Ramps 1.4](https://reprap.org/wiki/RAMPS_1.4/es)
+[Arduino MEga 2560](https://store.arduino.cc/arduino-mega-2560-rev3)
 
- **LB1938FA is the cousin of the L9110S carried by Dfrobotics servos.** 
 
-#### The inputs IN1 and IN2 of the driver are the RC5 and RC3 outputs of the PIC16f1503 respectively that can operate as PWM1 and PWM2.
 
-####
+ ![Board](./pictures/armpapBoard.jpg)
+
+ **DRV8825 is like A4988 but you can set it to 1:32 pulses versus 1:16 per step.** 
+
+
 
 ### Software
 
