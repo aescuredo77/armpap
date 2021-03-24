@@ -261,6 +261,14 @@ Instruction 0x0A. This module is designed to test the arm, the commands can be s
 
 
      
+## Next steps ##
+
+  - Create a plugin for Rviz.
+
+  - Develop a controller for gazebo.
+
+  - Develop a driver for gazebo and real robot.
+
 
      
 
